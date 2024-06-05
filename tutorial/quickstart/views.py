@@ -30,7 +30,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class PersonaViewSet(viewsets.ModelViewSet):
     queryset = Persona.objects.all().order_by('apellido')
     serializer_class = PersonaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    
 
 class NombreRetrieveView(RetrieveModelMixin, GenericAPIView):
         queryset = Persona.objects.all().order_by('apellido')
