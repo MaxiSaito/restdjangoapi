@@ -7,8 +7,8 @@ from rest_framework import permissions, viewsets
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import GenericAPIView
 
-from quickstart.serializers import GroupSerializer, UserSerializer, PersonaSerializer
-from quickstart.models import Persona
+from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer
+from quickstart.models import Alumnos
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -27,28 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-class PersonaViewSet(viewsets.ModelViewSet):
-    queryset = Persona.objects.all().order_by('apellido')
-    serializer_class = PersonaSerializer
+class AlumnoViewSet(viewsets.ModelViewSet):
+    queryset = Alumnos.objects.all()
+    serializer_class = AlumnosSerializer
     
-
-class NombreRetrieveView(RetrieveModelMixin, GenericAPIView):
-        queryset = Persona.objects.all().order_by('apellido')
-        serializer_class = PersonaSerializer
-        lookup_field = 'nombre'
-        def get(self, request, args, **kwargs):
-            return self.retrieve(request,args, **kwargs)
-
-class ApellidoRetrieveView(RetrieveModelMixin, GenericAPIView):
-        queryset = Persona.objects.all().order_by('apellido')
-        serializer_class = PersonaSerializer
-        lookup_field = 'apellido'
-        def get(self, request, args, **kwargs):
-            return self.retrieve(request,args, **kwargs)
-    
-class DNIRetrieveView(RetrieveModelMixin, GenericAPIView):
-        queryset = Persona.objects.all().order_by('apellido')
-        serializer_class = PersonaSerializer
-        lookup_field = 'dni'
-        def get(self, request, args, **kwargs):
-            return self.retrieve(request,args, **kwargs)
