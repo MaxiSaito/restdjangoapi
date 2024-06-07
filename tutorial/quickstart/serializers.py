@@ -22,3 +22,13 @@ class AlumnosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alumnos
         fields = '__all__'
+
+class ProfesoresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profesores
+        fields = '__all__'
+
+class MovimientosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movimientos
+        fields = '__all__'

@@ -7,8 +7,8 @@ from rest_framework import permissions, viewsets
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import GenericAPIView
 
-from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer
-from quickstart.models import Alumnos
+from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer, ProfesoresSerializer, MovimientosSerializer
+from quickstart.models import Alumnos, Profesores, Movimientos
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -31,3 +31,10 @@ class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumnos.objects.all()
     serializer_class = AlumnosSerializer
     
+class ProfesorViewSet(viewsets.ModelViewSet):
+    queryset = Profesores.objects.all()
+    serializer_class = ProfesoresSerializer
+
+class MovimientosViewSet(viewsets.ModelViewSet):
+    queryset = Movimientos.objects.all()
+    serializer_class = MovimientosSerializer
