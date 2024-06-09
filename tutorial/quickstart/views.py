@@ -8,7 +8,7 @@ from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import GenericAPIView
 
 from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer, ProfesoresSerializer, MovimientosSerializer
-from quickstart.models import Alumnos, Profesores, Movimientos
+from quickstart.models import Alumnos, Profesores, Movimientos, Admin, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Salas, TiposTurnos, Turnos
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -26,6 +26,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+#Endpoints
 
 class AlumnoViewSet(viewsets.ModelViewSet):
     queryset = Alumnos.objects.all()

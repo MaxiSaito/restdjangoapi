@@ -20,7 +20,6 @@ class Admin(models.Model):
     email = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'admin'
 
 
@@ -32,25 +31,32 @@ class Alumnos(models.Model):
     email = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'alumnos'
+
+class Profesores(models.Model):
+    dni = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=40)
+    apellido = models.CharField(max_length=30)
+    edad = models.IntegerField()
+    email = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        db_table = 'profesores'
 
 
 class AsistenciaAlumnos(models.Model):
-    dni_alumno = models.ForeignKey(Alumnos, models.DO_NOTHING, db_column='dni_alumno', blank=True, null=True)
+    dni_alumno = models.ForeignKey(Alumnos, on_delete=models.CASCADE, db_column='dni_alumno', blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'asistencia_alumnos'
 
 
 class AsistenciaProfesores(models.Model):
-    dni_profesor = models.ForeignKey('Profesores', models.DO_NOTHING, db_column='dni_profesor', blank=True, null=True)
+    dni_profesor = models.ForeignKey(Profesores, on_delete=models.CASCADE, db_column='dni_profesor', blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'asistencia_profesores'
 
 
@@ -62,7 +68,6 @@ class Cuotas(models.Model):
     estado = models.CharField(max_length=6)
 
     class Meta:
-        managed = False
         db_table = 'cuotas'
         unique_together = (('mes', 'ano', 'dni_alumno'),)
 
@@ -75,27 +80,13 @@ class Movimientos(models.Model):
     monto = models.FloatField()
 
     class Meta:
-        managed = False
         db_table = 'movimientos'
-
-
-class Profesores(models.Model):
-    dni = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=40)
-    apellido = models.CharField(max_length=30)
-    edad = models.IntegerField()
-    email = models.CharField(max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'profesores'
 
 
 class Salas(models.Model):
     numero = models.IntegerField(primary_key=True)
 
     class Meta:
-        managed = False
         db_table = 'salas'
 
 
@@ -104,7 +95,6 @@ class TiposTurnos(models.Model):
     precio = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tipos_turnos'
 
 
@@ -117,6 +107,5 @@ class Turnos(models.Model):
     num_sala = models.ForeignKey(Salas, models.DO_NOTHING, db_column='num_sala', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'turnos'
         unique_together = (('dia', 'hora'),)

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from .models import Admin, Alumnos, AsistenciaAlumnos, Cuotas, Movimientos, Profesores, Salas, TiposTurnos, Turnos
+from .models import Admin, Alumnos, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Movimientos, Profesores, Salas, TiposTurnos, Turnos
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -31,4 +31,34 @@ class ProfesoresSerializer(serializers.ModelSerializer):
 class MovimientosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movimientos
+        fields = '__all__'
+
+class AsisAlumnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AsistenciaAlumnos
+        fields = '__all__'
+
+class AsisProfeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AsistenciaProfesores
+        fields = '__all__'
+
+class CuotaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cuotas
+        fields = '__all__'
+
+class SalaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Salas
+        fields ='__all__'
+
+class TipoTurnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TiposTurnos
+        fields = '__all__'
+
+class TurnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Turnos
         fields = '__all__'
