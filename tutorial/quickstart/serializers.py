@@ -1,6 +1,6 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from .models import Admin, Alumnos, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Movimientos, Profesores, Salas, TiposTurnos, Turnos
+from .models import Admin, Alumnos, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Movimientos, Profesores, Salas, TiposTurnos, Turnos, ListaEspera
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -33,6 +33,24 @@ class MovimientosSerializer(serializers.ModelSerializer):
         model = Movimientos
         fields = '__all__'
 
+class TipoTurnoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TiposTurnos
+        fields = '__all__'
+
+class SalaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Salas
+        fields ='__all__'
+
+class TurnoSerializer(serializers.ModelSerializer):
+    alumno = AlumnosSerializer(source='dni_alumno', read_only=True)
+    sala = SalaSerializer(read_only=True)
+
+    class Meta:
+        model = Turnos
+        fields = '__all__'
+
 class AsisAlumnoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AsistenciaAlumnos
@@ -48,17 +66,7 @@ class CuotaSerializer(serializers.ModelSerializer):
         model = Cuotas
         fields = '__all__'
 
-class SalaSerializer(serializers.ModelSerializer):
+class ListaEsperaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Salas
-        fields ='__all__'
-
-class TipoTurnoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TiposTurnos
-        fields = '__all__'
-
-class TurnoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Turnos
+        model = ListaEspera
         fields = '__all__'

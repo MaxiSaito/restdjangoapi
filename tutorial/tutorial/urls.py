@@ -24,7 +24,12 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'alumnos',views.AlumnoViewSet)
 router.register(r'profes',views.ProfesorViewSet)
 router.register(r'movimientos',views.MovimientosViewSet)
-
+router.register(r'asistencia_alumno',views.AsisAlumnoViewSet)
+router.register(r'asistencia_profe',views.AsisProfeViewSet)
+router.register(r'turno',views.TurnosViewSet)
+router.register(r'tipoturno',views.TipoTurnoViewSet)
+router.register(r'cuota',views.CuotaViewSet)
+router.register(r'lista',views.ListaViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 

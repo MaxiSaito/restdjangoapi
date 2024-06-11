@@ -4,11 +4,12 @@ from django.shortcuts import render
 
 from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
+from rest_framework.response import Response
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import GenericAPIView
 
-from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer, ProfesoresSerializer, MovimientosSerializer
-from quickstart.models import Alumnos, Profesores, Movimientos, Admin, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Salas, TiposTurnos, Turnos
+from quickstart.serializers import GroupSerializer, UserSerializer, AlumnosSerializer, ProfesoresSerializer, MovimientosSerializer , AsisAlumnoSerializer, AsisProfeSerializer, TurnoSerializer , TipoTurnoSerializer, CuotaSerializer, ListaEsperaSerializer
+from quickstart.models import Alumnos, Profesores, Movimientos, Admin, AsistenciaAlumnos, AsistenciaProfesores, Cuotas, Salas, TiposTurnos, Turnos, ListaEspera
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -40,3 +41,42 @@ class ProfesorViewSet(viewsets.ModelViewSet):
 class MovimientosViewSet(viewsets.ModelViewSet):
     queryset = Movimientos.objects.all()
     serializer_class = MovimientosSerializer
+
+class AsisAlumnoViewSet(viewsets.ModelViewSet):
+    queryset = AsistenciaAlumnos.objects.select_related('dni_alumno').all()
+    serializer_class = AsisAlumnoSerializer
+
+
+class AsisProfeViewSet(viewsets.ModelViewSet):
+    queryset = AsistenciaProfesores.objects.select_related('dni_profesor').all()
+    serializer_class = AsisProfeSerializer
+
+class TurnosViewSet(viewsets.ModelViewSet):
+    queryset = Turnos.objects.all().select_related('dni_alumno','tipo','dni_profesor','num_sala')
+    serializer_class = TurnoSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        turnos = []
+        for turno in queryset:
+            turnos.append({
+                'dia': turno.dia,
+                'hora': turno.hora,
+                'tipo': turno.tipo.tipo,
+                'sala': turno.num_sala.numero,
+                'alumno': f'{turno.dni_alumno.nombre} {turno.dni_alumno.apellido}'
+            })
+        return Response(turnos)
+
+
+class TipoTurnoViewSet(viewsets.ModelViewSet):
+    queryset = TiposTurnos.objects.all()
+    serializer_class = TipoTurnoSerializer
+
+class CuotaViewSet(viewsets.ModelViewSet):
+    queryset = Cuotas.objects.select_related('dni_alumno').all()
+    serializer_class = CuotaSerializer
+
+class ListaViewSet(viewsets.ModelViewSet):
+    queryset = ListaEspera.objects.all()
+    serializer_class = ListaEsperaSerializer

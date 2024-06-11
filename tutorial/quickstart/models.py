@@ -1,5 +1,3 @@
-from django.db import models
-
 # Create your models here.
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
@@ -29,6 +27,7 @@ class Alumnos(models.Model):
     apellido = models.CharField(max_length=30)
     edad = models.IntegerField()
     email = models.CharField(max_length=50, blank=True, null=True)
+    inicio = models.DateField(null=True)
 
     class Meta:
         db_table = 'alumnos'
@@ -39,30 +38,15 @@ class Profesores(models.Model):
     apellido = models.CharField(max_length=30)
     edad = models.IntegerField()
     email = models.CharField(max_length=50, blank=True, null=True)
+    inicio = models.DateField(null=True)
 
     class Meta:
         db_table = 'profesores'
 
 
-class AsistenciaAlumnos(models.Model):
-    dni_alumno = models.ForeignKey(Alumnos, on_delete=models.CASCADE, db_column='dni_alumno', blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'asistencia_alumnos'
-
-
-class AsistenciaProfesores(models.Model):
-    dni_profesor = models.ForeignKey(Profesores, on_delete=models.CASCADE, db_column='dni_profesor', blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'asistencia_profesores'
-
-
 class Cuotas(models.Model):
     monto = models.FloatField()
-    dni_alumno = models.ForeignKey(Alumnos, models.DO_NOTHING, db_column='dni_alumno')
+    dni_alumno = models.ForeignKey(Alumnos, models.DO_NOTHING, db_column='dni_alumno', blank=True, null=True)
     mes = models.CharField(primary_key=True, max_length=10)  # The composite primary key (mes, ano, dni_alumno) found, that is not supported. The first column is selected.
     ano = models.IntegerField()
     estado = models.CharField(max_length=6)
@@ -97,9 +81,16 @@ class TiposTurnos(models.Model):
     class Meta:
         db_table = 'tipos_turnos'
 
+SEMANA = [
+    ("Lunes" , "Lunes"),
+    ("Martes" , "Martes"),
+    ("Miércoles" , "Miércoles"),
+    ("Jueves" , "Jueves"),
+    ("Viernes" , "Viernes"),
+]
 
 class Turnos(models.Model):
-    dia = models.DateField(primary_key=True)  # The composite primary key (dia, hora) found, that is not supported. The first column is selected.
+    dia = models.CharField(max_length=10, choices=SEMANA) 
     hora = models.TimeField()
     tipo = models.ForeignKey(TiposTurnos, models.DO_NOTHING, db_column='tipo', blank=True, null=True)
     dni_alumno = models.ForeignKey(Alumnos, models.DO_NOTHING, db_column='dni_alumno', blank=True, null=True)
@@ -108,4 +99,30 @@ class Turnos(models.Model):
 
     class Meta:
         db_table = 'turnos'
-        unique_together = (('dia', 'hora'),)
+        unique_together = ('hora', 'dni_alumno')
+
+
+class AsistenciaAlumnos(models.Model):
+    dni_alumno = models.ForeignKey(Alumnos, on_delete=models.CASCADE, db_column='dni_alumno', blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    asistio = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'asistencia_alumnos'
+
+
+class AsistenciaProfesores(models.Model):
+    dni_profesor = models.ForeignKey(Profesores, on_delete=models.CASCADE, db_column='dni_profesor', blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    asistio = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'asistencia_profesores'
+
+class ListaEspera(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=30)
+    contacto = models.CharField(max_length=30)
+    obv = models.CharField(max_length=150)
+    class Meta:
+        db_table = 'lista_espera'
