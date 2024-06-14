@@ -60,6 +60,7 @@ class TurnosViewSet(viewsets.ModelViewSet):
         turnos = []
         for turno in queryset:
             turnos.append({
+                'id' : turno.id,
                 'dia': turno.dia,
                 'hora': turno.hora,
                 'tipo': turno.tipo.tipo,
