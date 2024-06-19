@@ -65,7 +65,8 @@ class TurnosViewSet(viewsets.ModelViewSet):
                 'hora': turno.hora,
                 'tipo': turno.tipo.tipo,
                 'sala': turno.num_sala.numero,
-                'alumno': f'{turno.dni_alumno.nombre} {turno.dni_alumno.apellido}'
+                'alumno': f'{turno.dni_alumno.nombre} {turno.dni_alumno.apellido}',
+                'dni': turno.dni_alumno.dni
             })
         return Response(turnos)
 
