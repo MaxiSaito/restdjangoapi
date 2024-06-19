@@ -99,7 +99,7 @@ class Turnos(models.Model):
 
     class Meta:
         db_table = 'turnos'
-        unique_together = ('hora', 'dni_alumno')
+        unique_together = ('hora', 'dni_alumno','dia')
 
 
 class AsistenciaAlumnos(models.Model):
