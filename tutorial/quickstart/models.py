@@ -109,6 +109,8 @@ class AsistenciaAlumnos(models.Model):
 
     class Meta:
         db_table = 'asistencia_alumnos'
+        unique_together = ('dni_alumno','fecha')
+
 
 
 class AsistenciaProfesores(models.Model):
