@@ -45,7 +45,18 @@ class MovimientosViewSet(viewsets.ModelViewSet):
 class AsisAlumnoViewSet(viewsets.ModelViewSet):
     queryset = AsistenciaAlumnos.objects.select_related('dni_alumno').all()
     serializer_class = AsisAlumnoSerializer
-
+    def list(self, request, *args, **kwargs):
+            queryset = self.get_queryset()
+            asis = []
+            for turno in queryset:
+                asis.append({
+                    'id' : turno.id,
+                    'fecha': turno.fecha,
+                    'asistio': turno.asistio,
+                    'alumno': f'{turno.dni_alumno.nombre} {turno.dni_alumno.apellido}',
+                    'dni': turno.dni_alumno.dni
+                })
+            return Response(asis)
 
 class AsisProfeViewSet(viewsets.ModelViewSet):
     queryset = AsistenciaProfesores.objects.select_related('dni_profesor').all()
